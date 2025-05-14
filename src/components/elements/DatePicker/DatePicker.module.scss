@@ -1,0 +1,38 @@
+.container {
+  &__picker {
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &__calendar {
+      &__header {
+        border: 1px solid #000;
+      }
+
+      &__row {
+        border: 1px solid #000;
+
+        &__day {
+          border: 1px solid #000;
+          background-color: #ececec;
+          color: #c5c5c5;
+
+          &__currentMonth {
+            background-color: #d0d0d0;
+            color: #000;
+          }
+          &__today {
+            color: #9fa5ed;
+          }
+
+          &__selected {
+            background-color: #e6d70c;
+            color: #9fa5ed;
+          }
+        }
+      }
+    }
+  }
+}
