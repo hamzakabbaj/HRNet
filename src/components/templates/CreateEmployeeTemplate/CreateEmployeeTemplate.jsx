@@ -40,12 +40,18 @@ const CreateEmployeeTemplate = () => {
           <input type="text" id="last-name" name="last-name" />
         </div>
         <div className={styles.container__form__input}>
-          <label htmlFor="date-of-birth">Date of Birth</label>
-          <DatePicker value={dateOfBirth} onChange={setDateOfBirth} />
+          <DatePicker
+            label="Date of Birth"
+            value={dateOfBirth}
+            onChange={setDateOfBirth}
+          />
         </div>
         <div className={styles.container__form__input}>
-          <label htmlFor="start-date">Start Date</label>
-          <DatePicker value={startDate} onChange={setStartDate} />
+          <DatePicker
+            label="Start Date"
+            value={startDate}
+            onChange={setStartDate}
+          />
         </div>
         <div className={styles.container__form__address}>
           <fieldset>
