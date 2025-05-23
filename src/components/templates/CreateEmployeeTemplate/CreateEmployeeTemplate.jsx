@@ -3,9 +3,14 @@ import styles from "./CreateEmployeeTemplate.module.scss";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedState } from "@/features/States/statesSlice";
+import DatePicker from "@/components/elements/DatePicker";
+
 const CreateEmployeeTemplate = () => {
   const dispatch = useDispatch();
   const states = useSelector((state) => state.states.states);
+  const [dateOfBirth, setDateOfBirth] = React.useState("");
+  const [startDate, setStartDate] = React.useState("");
+
   return (
     <div className={styles.container}>
       <div className={styles.container__title}>
@@ -25,11 +30,11 @@ const CreateEmployeeTemplate = () => {
         </div>
         <div className={styles.container__form__input}>
           <label htmlFor="date-of-birth">Date of Birth</label>
-          <input type="text" id="date-of-birth" name="date-of-birth" />
+          <DatePicker value={dateOfBirth} onChange={setDateOfBirth} />
         </div>
         <div className={styles.container__form__input}>
           <label htmlFor="start-date">Start Date</label>
-          <input type="text" id="start-date" name="start-date" />
+          <DatePicker value={startDate} onChange={setStartDate} />
         </div>
         <div className={styles.container__form__address}>
           <fieldset>

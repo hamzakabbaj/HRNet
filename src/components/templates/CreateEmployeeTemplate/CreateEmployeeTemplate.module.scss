@@ -1,9 +1,42 @@
+@import "@/styles/variables.scss";
+
 .container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
   &__title {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    margin-bottom: 2rem;
+
+    h1 {
+      color: $dark-olive;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      color: $dark-olive;
+      font-size: 1.8rem;
+      margin: 1rem 0;
+    }
+
+    a {
+      color: $primary-green;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: $dark-olive;
+      }
+    }
   }
 
   &__form {
@@ -11,13 +44,38 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 1.5rem;
+    width: 100%;
 
     &__input {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;
+      width: 100%;
+      max-width: 400px;
+
+      label {
+        color: $dark-olive;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid $light-olive;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-green;
+          box-shadow: 0 0 0 2px rgba($primary-green, 0.2);
+        }
+      }
     }
 
     &__address {
@@ -26,6 +84,41 @@
       align-items: flex-start;
       justify-content: center;
       gap: 1rem;
+      width: 100%;
+      max-width: 400px;
+      padding: 1.5rem;
+      border: 1px solid $light-olive;
+      border-radius: 4px;
+      background-color: rgba($light-olive, 0.1);
+
+      fieldset {
+        width: 100%;
+        border: none;
+        padding: 0;
+
+        legend {
+          color: $dark-olive;
+          font-weight: 600;
+          font-size: 1.1rem;
+          margin-bottom: 1rem;
+        }
+      }
+    }
+
+    button[type="submit"] {
+      background-color: $primary-green;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 1rem;
+
+      &:hover {
+        background-color: $dark-olive;
+      }
     }
   }
 }
