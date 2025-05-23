@@ -1,0 +1,94 @@
+.container {
+  width: 100%;
+
+  &__select {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &__label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    &__selectbox {
+      position: relative;
+      width: 100%;
+
+      &__selected {
+        padding: 10px 12px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        color: #333;
+        transition: all 0.2s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &:hover {
+          border-color: #999;
+        }
+
+        &__chevron {
+          color: #666;
+          font-size: 12px;
+          transition: transform 0.2s ease;
+        }
+      }
+
+      &__options {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-top: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        max-height: calc(var(--max-visible-options) * var(--option-height));
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #ddd #fff;
+
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: #fff;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: #ddd;
+          border-radius: 3px;
+        }
+
+        &__option {
+          padding: 10px 12px;
+          cursor: pointer;
+          font-size: 14px;
+          color: #333;
+          transition: background-color 0.2s ease;
+          height: var(--option-height);
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+
+          &:hover {
+            background-color: #f5f5f5;
+          }
+
+          &:not(:last-child) {
+            border-bottom: 1px solid #eee;
+          }
+        }
+      }
+    }
+  }
+}
