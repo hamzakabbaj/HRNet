@@ -6,7 +6,7 @@ import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useRef } from "react";
 import { getVisibleCalendarDays } from "./utils.js";
 
-const DatePicker = ({ value, onChange }) => {
+const DatePicker = ({ label, value, onChange, className = "" }) => {
   // --------------------- Init States ---------------------
   const [visibleCalendarMonth, setVisibleCalendarMonth] = useState(
     new Date().getMonth()
@@ -21,20 +21,31 @@ const DatePicker = ({ value, onChange }) => {
 
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(value || null);
 
   const calendarRef = useRef(null);
+  const isInitialMount = useRef(true);
+
+  const containerId = label.toLowerCase().replace(" ", "-");
 
   // --------------------- Use Effects ---------------------
   useEffect(() => {
-    if (onChange) {
+    // Skip the first render to avoid unnecessary onChange call
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
+    if (onChange && selectedDate !== value) {
       onChange(selectedDate);
     }
-  }, [selectedDate]);
+  }, [selectedDate, onChange, value]);
 
   useEffect(() => {
-    setSelectedDate(value);
-  }, [value]);
+    if (value !== selectedDate) {
+      setSelectedDate(value);
+    }
+  }, []);
 
   useEffect(() => {
     setVisibleCalendarDays(
@@ -112,12 +123,14 @@ const DatePicker = ({ value, onChange }) => {
 
   // --------------------- Render ---------------------
   return (
-    <div className={styles.container} ref={calendarRef}>
+    <div className={`${styles.container} ${className}`} ref={calendarRef}>
+      <label htmlFor={containerId}>{label}</label>
       <input
         type="text"
-        value={selectedDate}
+        value={selectedDate || ""}
         onClick={() => setIsCalendarOpen(!isCalendarOpen)}
         readOnly
+        id={containerId}
       />
       {isCalendarOpen && (
         <div className={styles.container__picker}>
@@ -127,7 +140,9 @@ const DatePicker = ({ value, onChange }) => {
             <div className={styles.container__picker__header__selects}></div>
             <select
               value={visibleCalendarMonth}
-              onChange={(e) => setVisibleCalendarMonth(e.target.value)}
+              onChange={(e) =>
+                setVisibleCalendarMonth(parseInt(e.target.value))
+              }
             >
               <option value="0">January</option>
               <option value="1">February</option>
@@ -144,7 +159,7 @@ const DatePicker = ({ value, onChange }) => {
             </select>
             <select
               value={visibleCalendarYear}
-              onChange={(e) => setVisibleCalendarYear(e.target.value)}
+              onChange={(e) => setVisibleCalendarYear(parseInt(e.target.value))}
             >
               {Array.from({ length: 100 }, (_, i) => (
                 <option key={i} value={new Date().getFullYear() - 75 + i}>

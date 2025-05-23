@@ -96,7 +96,7 @@ export const getVisibleCalendarDays = (month, year, selectedDate) => {
     ...nextMonthDates,
   ];
 
-  console.log(allDates);
+  // console.log(allDates);
 
   return { allDates, numberOfWeeksInMonth };
 };
