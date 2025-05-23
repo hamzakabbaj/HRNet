@@ -4,12 +4,23 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedState } from "@/features/States/statesSlice";
 import DatePicker from "@/components/elements/DatePicker";
+import SelectMenu from "@/components/elements/SelectMenu";
 
 const CreateEmployeeTemplate = () => {
   const dispatch = useDispatch();
   const states = useSelector((state) => state.states.states);
   const [dateOfBirth, setDateOfBirth] = React.useState("");
   const [startDate, setStartDate] = React.useState("");
+  const [selectedState, setSelectedState] = React.useState("");
+  const [selectedDepartment, setSelectedDepartment] = React.useState("");
+
+  const departmentOptions = [
+    "Sales",
+    "Marketing",
+    "Engineering",
+    "Human Resources",
+    "Legal",
+  ];
 
   return (
     <div className={styles.container}>
@@ -48,15 +59,13 @@ const CreateEmployeeTemplate = () => {
               <label htmlFor="city">City</label>
               <input type="text" id="city" name="city" />
             </div>
-            <div className={styles.container__form__selectbox}>
-              <label htmlFor="state">State</label>
-              <select id="state" name="state">
-                {states.map((state) => (
-                  <option key={state.abbreviation} value={state.name}>
-                    {state.name}
-                  </option>
-                ))}
-              </select>
+            <div className={styles.container__form__input}>
+              <SelectMenu
+                label="State"
+                options={states.map((state) => state.name)}
+                value={selectedState}
+                onChange={setSelectedState}
+              />
             </div>
             <div className={styles.container__form__input}>
               <label htmlFor="zip-code">Zip Code</label>
@@ -65,14 +74,12 @@ const CreateEmployeeTemplate = () => {
           </fieldset>
         </div>
         <div className={styles.container__form__input}>
-          <label htmlFor="department">Department</label>
-          <select id="department" name="department">
-            <option value="Sales">Sales</option>
-            <option value="Marketing">Marketing</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Human Resources">Human Resources</option>
-            <option value="Legal">Legal</option>
-          </select>
+          <SelectMenu
+            label="Department"
+            options={departmentOptions}
+            value={selectedDepartment}
+            onChange={setSelectedDepartment}
+          />
         </div>
         <button type="submit">Save</button>
       </form>
