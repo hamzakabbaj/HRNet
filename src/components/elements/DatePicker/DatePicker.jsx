@@ -26,7 +26,10 @@ const DatePicker = ({ label, value, onChange, className = "" }) => {
   const calendarRef = useRef(null);
   const isInitialMount = useRef(true);
 
-  const containerId = label.toLowerCase().replace(" ", "-");
+  const containerId =
+    label !== undefined
+      ? label.toLowerCase().replace(" ", "-")
+      : "date-picker-input";
 
   // --------------------- Use Effects ---------------------
   useEffect(() => {
