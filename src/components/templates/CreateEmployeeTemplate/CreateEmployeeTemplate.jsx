@@ -2,15 +2,14 @@ import React from "react";
 import styles from "./CreateEmployeeTemplate.module.scss";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedState } from "@/features/States/statesSlice";
 import { addEmployee } from "@/features/Employees/employeesSlice";
 import DatePicker from "@/components/elements/DatePicker";
 import SelectMenu from "@/components/elements/SelectMenu";
+import Modal from "@/components/elements/Modal";
 
 const CreateEmployeeTemplate = () => {
   const dispatch = useDispatch();
   const states = useSelector((state) => state.states.states);
-  const employees = useSelector((state) => state.employees.employees);
 
   // Personal Information
   const [dateOfBirth, setDateOfBirth] = React.useState("");
@@ -27,6 +26,11 @@ const CreateEmployeeTemplate = () => {
   // Department
   const [department, setDepartment] = React.useState("");
 
+  // Modal
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  const [modalMessage, setModalMessage] = React.useState("");
+
   const departmentOptions = [
     "Sales",
     "Marketing",
@@ -35,19 +39,20 @@ const CreateEmployeeTemplate = () => {
     "Legal",
   ];
 
+  const clearForm = () => {
+    setFirstName("");
+    setLastName("");
+    setDateOfBirth("");
+    setStartDate("");
+    setStreet("");
+    setCity("");
+    setState("");
+    setZipCode("");
+    setDepartment("");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      firstName,
-      lastName,
-      dateOfBirth,
-      startDate,
-      street,
-      city,
-      state,
-      zipCode,
-      department
-    );
     dispatch(
       addEmployee({
         firstName,
@@ -61,6 +66,11 @@ const CreateEmployeeTemplate = () => {
         department,
       })
     );
+    setModalMessage(
+      `Employee ${firstName} ${lastName} has been created successfully`
+    );
+    setIsModalOpen(true);
+    clearForm();
   };
 
   return (
@@ -82,6 +92,7 @@ const CreateEmployeeTemplate = () => {
             type="text"
             id="first-name"
             name="first-name"
+            value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
         </div>
@@ -91,18 +102,23 @@ const CreateEmployeeTemplate = () => {
             type="text"
             id="last-name"
             name="last-name"
+            value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
         </div>
         <div className={styles.container__form__input}>
           <DatePicker
             label="Date of Birth"
-            value=""
+            value={dateOfBirth}
             onChange={setDateOfBirth}
           />
         </div>
         <div className={styles.container__form__input}>
-          <DatePicker label="Start Date" value="" onChange={setStartDate} />
+          <DatePicker
+            label="Start Date"
+            value={startDate}
+            onChange={setStartDate}
+          />
         </div>
         <div className={styles.container__form__address}>
           <fieldset>
@@ -125,13 +141,14 @@ const CreateEmployeeTemplate = () => {
                 id="city"
                 name="city"
                 onChange={(e) => setCity(e.target.value)}
+                value={city}
               />
             </div>
             <div className={styles.container__form__input}>
               <SelectMenu
                 label="State"
                 options={states.map((state) => state.name)}
-                value=""
+                value={state}
                 onChange={setState}
               />
             </div>
@@ -142,6 +159,7 @@ const CreateEmployeeTemplate = () => {
                 id="zip-code"
                 name="zip-code"
                 onChange={(e) => setZipCode(e.target.value)}
+                value={zipCode}
               />
             </div>
           </fieldset>
@@ -150,12 +168,16 @@ const CreateEmployeeTemplate = () => {
           <SelectMenu
             label="Department"
             options={departmentOptions}
-            value=""
+            value={department}
             onChange={setDepartment}
           />
         </div>
         <button type="submit">Save</button>
       </form>
+      <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
+        <h2>Employee Created</h2>
+        <p>{modalMessage}</p>
+      </Modal>
     </div>
   );
 };
