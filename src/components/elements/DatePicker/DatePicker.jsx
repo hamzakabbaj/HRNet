@@ -36,10 +36,10 @@ const DatePicker = ({ label, value, onChange, className = "" }) => {
       return;
     }
 
-    if (onChange && selectedDate !== value) {
+    if (onChange && selectedDate !== value && selectedDate !== null) {
       onChange(selectedDate);
     }
-  }, [selectedDate, onChange, value]);
+  }, [selectedDate, value]);
 
   useEffect(() => {
     if (value !== selectedDate) {
