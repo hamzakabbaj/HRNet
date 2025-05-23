@@ -3,112 +3,11 @@ import styles from "./DatePicker.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { getVisibleCalendarDays } from "./utils.js";
 
-const getDaysInMonth = (month, year) => {
-  return new Date(year, month + 1, 0).getDate();
-};
-
-const getFirstDayOfMonth = (month, year) => {
-  return new Date(year, month, 1).getDay();
-};
-
-const getLastDayOfMonth = (month, year) => {
-  return new Date(year, month + 1, 0).getDay();
-};
-
-const getNumberOfWeeksInMonth = (month, year) => {
-  // Get Number of sundays in the month
-  // Get Number of saturdays in the month
-  // min of the two + 1
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-
-  const firstSunday = 7 - firstDay.getDay();
-  const lastSaturday = lastDay.getDate() - lastDay.getDay();
-
-  const numberOfSundays = Math.floor((lastSaturday - firstSunday) / 7) + 1;
-  const numberOfSaturdays = Math.floor((lastSaturday - firstSunday) / 7) + 1;
-
-  return Math.min(numberOfSundays, numberOfSaturdays) + 1;
-};
-
-const getVisibleCalendarDays = (month, year, selectedDate) => {
-  const daysInMonth = getDaysInMonth(month, year);
-  const daysInPreviousMonth = getDaysInMonth((month - 1) % 12, year);
-  const firstDayOfMonth = getFirstDayOfMonth(month, year);
-  const lastDayOfMonth = getLastDayOfMonth(month, year);
-  const numberOfWeeksInMonth = getNumberOfWeeksInMonth(month, year);
-
-  const previousMonthDays = Array.from(
-    { length: firstDayOfMonth },
-    (_, i) => daysInPreviousMonth - firstDayOfMonth + i + 1
-  );
-
-  const currentMonthDays = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-
-  const nextMonthDays = Array.from(
-    { length: 6 - lastDayOfMonth },
-    (_, i) => i + 1
-  );
-
-  const previousMonthDates = previousMonthDays.map((day) => {
-    return {
-      date: new Date(year, (month - 1) % 12, day + 1)
-        .toISOString()
-        .split("T")[0],
-      day: day,
-      isCurrentMonth: false,
-      isToday:
-        new Date(year, (month - 1) % 12, day + 1)
-          .toISOString()
-          .split("T")[0] === new Date().toISOString().split("T")[0],
-      isSelected:
-        selectedDate ===
-        new Date(year, (month - 1) % 12, day + 1).toISOString().split("T")[0],
-    };
-  });
-
-  const currentMonthDates = currentMonthDays.map((day) => {
-    return {
-      date: new Date(year, month, day + 1).toISOString().split("T")[0],
-      day: day,
-      isCurrentMonth: true,
-      isToday:
-        new Date(year, month, day + 1).toISOString().split("T")[0] ===
-        new Date().toISOString().split("T")[0],
-      isSelected:
-        selectedDate ===
-        new Date(year, month, day + 1).toISOString().split("T")[0],
-    };
-  });
-
-  const nextMonthDates = nextMonthDays.map((day) => {
-    return {
-      date: new Date(year, month + 1, day + 1).toISOString().split("T")[0],
-      day: day,
-      isCurrentMonth: false,
-      isToday:
-        new Date(year, month + 1, day + 1).toISOString().split("T")[0] ===
-        new Date().toISOString().split("T")[0],
-      isSelected:
-        selectedDate ===
-        new Date(year, month + 1, day + 1).toISOString().split("T")[0],
-    };
-  });
-
-  const allDates = [
-    ...previousMonthDates,
-    ...currentMonthDates,
-    ...nextMonthDates,
-  ];
-
-  console.log(allDates);
-
-  return { allDates, numberOfWeeksInMonth };
-};
-
-const DatePicker = () => {
+const DatePicker = ({ value, onChange }) => {
+  // --------------------- Init States ---------------------
   const [visibleCalendarMonth, setVisibleCalendarMonth] = useState(
     new Date().getMonth()
   );
@@ -124,6 +23,19 @@ const DatePicker = () => {
 
   const [selectedDate, setSelectedDate] = useState(null);
 
+  const calendarRef = useRef(null);
+
+  // --------------------- Use Effects ---------------------
+  useEffect(() => {
+    if (onChange) {
+      onChange(selectedDate);
+    }
+  }, [selectedDate]);
+
+  useEffect(() => {
+    setSelectedDate(value);
+  }, [value]);
+
   useEffect(() => {
     setVisibleCalendarDays(
       getVisibleCalendarDays(
@@ -134,6 +46,20 @@ const DatePicker = () => {
     );
   }, [visibleCalendarMonth, visibleCalendarYear, selectedDate]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+        setIsCalendarOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // --------------------- Handlers ---------------------
   const goToCurrentMonth = () => {
     setVisibleCalendarMonth(new Date().getMonth());
     setVisibleCalendarYear(new Date().getFullYear());
@@ -157,6 +83,17 @@ const DatePicker = () => {
     }
   };
 
+  const handleDateClick = (i) => {
+    setSelectedDate(visibleCalendarDays.allDates[i].date);
+    if (!isCurrentMonth(i)) {
+      const date = new Date(visibleCalendarDays.allDates[i].date);
+      setVisibleCalendarMonth(date.getMonth());
+      setVisibleCalendarYear(date.getFullYear());
+    }
+    setIsCalendarOpen(false);
+  };
+
+  // --------------------- Helpers ---------------------
   const isCurrentMonth = (i) => {
     return visibleCalendarDays.allDates[i].isCurrentMonth;
   };
@@ -173,21 +110,14 @@ const DatePicker = () => {
     return visibleCalendarDays.allDates[i].isToday;
   };
 
-  const handleDateClick = (i) => {
-    setSelectedDate(visibleCalendarDays.allDates[i].date);
-    if (!isCurrentMonth(i)) {
-      const date = new Date(visibleCalendarDays.allDates[i].date);
-      setVisibleCalendarMonth(date.getMonth());
-      setVisibleCalendarYear(date.getFullYear());
-    }
-  };
-
+  // --------------------- Render ---------------------
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={calendarRef}>
       <input
         type="text"
         value={selectedDate}
         onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+        readOnly
       />
       {isCalendarOpen && (
         <div className={styles.container__picker}>
