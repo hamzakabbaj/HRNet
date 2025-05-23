@@ -128,4 +128,24 @@
       }
     }
   }
+
+  // DatePicker overrides
+  :global {
+    .oc-react-date-picker {
+      --datepicker-bg-color: #ffffff;
+      --datepicker-text-color: $dark-olive;
+      --datepicker-border-color: #c7d299;
+      --datepicker-primary-color: $primary-green;
+      --datepicker-hover-color: rgba($light-olive, 0.3);
+      --datepicker-selected-color: #7a9a01;
+      --datepicker-today-color: #7a9a01;
+      --datepicker-disabled-color: rgba($dark-olive, 0.3);
+      --datepicker-font-family: $font-family-base;
+      --datepicker-shadow: 0 2px 10px rgba(122, 154, 1, 0.1);
+      --datepicker-focus-shadow: 0 0 0 2px rgba(122, 154, 1, 0.2);
+      --datepicker-spacing-sm: 0.8rem;
+      --datepicker-spacing-md: 0.8rem;
+      --datepicker-width: 100%;
+    }
+  }
 }

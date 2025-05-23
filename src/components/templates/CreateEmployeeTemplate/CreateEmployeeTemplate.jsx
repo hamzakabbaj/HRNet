@@ -3,9 +3,10 @@ import styles from "./CreateEmployeeTemplate.module.scss";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addEmployee } from "@/features/Employees/employeesSlice";
-import DatePicker from "@/components/elements/DatePicker";
+// import DatePicker from "@/components/elements/DatePicker";
 import SelectMenu from "@/components/elements/SelectMenu";
 import Modal from "@/components/elements/Modal";
+import DatePicker from "oc-react-date-picker";
 
 const CreateEmployeeTemplate = () => {
   const dispatch = useDispatch();
@@ -111,6 +112,7 @@ const CreateEmployeeTemplate = () => {
             label="Date of Birth"
             value={dateOfBirth}
             onChange={setDateOfBirth}
+            className="oc-react-date-picker"
           />
         </div>
         <div className={styles.container__form__input}>
@@ -118,6 +120,7 @@ const CreateEmployeeTemplate = () => {
             label="Start Date"
             value={startDate}
             onChange={setStartDate}
+            className="oc-react-date-picker"
           />
         </div>
         <div className={styles.container__form__address}>
