@@ -1,0 +1,89 @@
+@import "@/styles/variables.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: $light-olive;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 3rem;
+
+    &__logo {
+      width: 200px;
+      height: auto;
+      margin-bottom: 1rem;
+    }
+
+    &__title {
+      font-size: 2.5rem;
+      color: $dark-olive;
+      margin: 0;
+      letter-spacing: 2px;
+      font-weight: 700;
+      font-family: $font-family-base;
+    }
+  }
+
+  &__cards {
+    display: flex;
+    gap: 2rem;
+    max-width: 1200px;
+    width: 100%;
+
+    &__card {
+      flex: 1;
+      background-color: white;
+      padding: 2rem;
+      border-radius: 12px;
+      border: 2px solid $primary-green;
+      box-shadow: 0 4px 12px rgba(122, 154, 1, 0.08);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      font-family: $font-family-base;
+
+      &:hover {
+        transform: translateY(-5px) scale(1.03);
+        box-shadow: 0 8px 20px rgba(163, 180, 61, 0.18);
+        border-color: $accent-green;
+
+        .container__cards__card__icon {
+          transform: scale(1.1);
+          color: $accent-green;
+        }
+      }
+
+      &__icon {
+        font-size: 2.5rem;
+        color: $primary-green;
+        margin-bottom: 1.5rem;
+        transition: transform 0.2s, color 0.2s;
+      }
+
+      h2 {
+        color: $dark-olive;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        font-family: $font-family-base;
+      }
+
+      p {
+        color: darken($dark-olive, 10%);
+        font-size: 1rem;
+        line-height: 1.5;
+        font-family: $font-family-base;
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { store } from "./store";
 import MainTemplate from "@/components/templates/MainTemplate";
 import CreateEmployee from "@/pages/CreateEmployee";
 import EmployeeList from "@/pages/EmployeeList";
+import Home from "@/pages/Home";
 import "./styles/global.scss";
 
 createRoot(document.getElementById("root")).render(
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainTemplate />}>
+            <Route path="/" element={<Home />} />
             <Route path="/create-employee" element={<CreateEmployee />} />
             <Route path="/employee-list" element={<EmployeeList />} />
           </Route>
