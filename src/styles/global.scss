@@ -1,0 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+
+@import "@/styles/variables.scss";
+body {
+  font-family: $font-family-base;
+  color: #222;
+  background: none;
+  margin: 0;
+  padding: 0;
+}
